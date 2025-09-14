@@ -2,41 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* EduPlay - Gamified Education Design System */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base Colors - Bright & Playful */
+    --background: 240 100% 98%;
+    --foreground: 222 84% 15%;
 
+    /* Cards & Surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 84% 15%;
+    --game-card: 0 0% 100%;
+    --game-card-shadow: 220 26% 85%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Brand Colors - Fun & Educational */
+    --primary: 217 91% 60%;        /* Bright Blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 217 91% 70%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --secondary: 262 83% 65%;      /* Purple */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 262 83% 75%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --accent: 22 93% 58%;          /* Orange */
+    --accent-foreground: 0 0% 100%;
+    
+    --success: 142 76% 50%;        /* Green */
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 48 96% 60%;         /* Yellow */
+    --warning-foreground: 222 84% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Interactive States */
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Gamification Colors */
+    --star-gold: 45 93% 58%;
+    --badge-bronze: 25 76% 50%;
+    --badge-silver: 0 0% 75%;
+    --badge-gold: 45 93% 58%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Gradients */
+    --gradient-rainbow: linear-gradient(135deg, 
+      hsl(262 83% 65%) 0%, 
+      hsl(217 91% 60%) 25%, 
+      hsl(142 76% 50%) 50%, 
+      hsl(48 96% 60%) 75%, 
+      hsl(22 93% 58%) 100%);
+    
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(217 91% 60%) 0%, 
+      hsl(262 83% 65%) 100%);
+    
+    --gradient-card: linear-gradient(145deg, 
+      hsl(0 0% 100%) 0%, 
+      hsl(220 14% 96%) 100%);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --gradient-button: linear-gradient(135deg,
+      hsl(217 91% 60%) 0%,
+      hsl(217 91% 70%) 100%);
 
-    --radius: 0.5rem;
+    /* Shadows */
+    --shadow-game-card: 0 8px 30px -8px hsl(220 26% 85%);
+    --shadow-button: 0 4px 15px -3px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 30px hsl(var(--primary-glow) / 0.4);
+
+    /* Animation Variables */
+    --bounce-duration: 0.6s;
+    --hover-scale: 1.05;
+    --active-scale: 0.95;
+
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +143,119 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-fredoka;
+  }
+}
+
+@layer components {
+  /* Game Card Animations */
+  .game-card {
+    @apply bg-card rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer;
+    box-shadow: var(--shadow-game-card);
+    background: var(--gradient-card);
+  }
+
+  .game-card:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  /* Button Variants */
+  .btn-hero {
+    @apply px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300;
+    background: var(--gradient-button);
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-hero:active {
+    transform: translateY(0);
+  }
+
+  /* Score & Achievement Animations */
+  .score-bounce {
+    animation: scoreBounce var(--bounce-duration) cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .star-glow {
+    color: hsl(var(--star-gold));
+    filter: drop-shadow(0 0 8px hsl(var(--star-gold) / 0.6));
+  }
+
+  /* Progress Bar */
+  .progress-fill {
+    background: var(--gradient-rainbow);
+    border-radius: 9999px;
+    transition: width 0.5s ease-in-out;
+  }
+
+  /* Floating Animation */
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Rainbow Text */
+  .rainbow-text {
+    background: var(--gradient-rainbow);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: rainbow 2s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-gradient-hero {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-rainbow {
+    background: var(--gradient-rainbow);
+  }
+}
+
+@keyframes scoreBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
